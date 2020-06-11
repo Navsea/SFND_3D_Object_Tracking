@@ -69,16 +69,43 @@ Step3:
 calculate the mean of these valid distRatios and calculate TTC
 
 FP.5
+I added a summary of my results in 3DObjectDetTTC.xlsx
+
 Performance evaluation of TTC lidar
-between frame pair 3 and 4 we see a sudden change in values
-From the pictures i can see that we suddenly use different lidar points.
-Could be caused by the fact that we are getting close to the car and get a new perspective.
-or maybe different lighting conditions?
+I think that in the first 4 frames (0 -> 3) we brake harder than the car in front of us.
+I say this based on the delta x values that become lower, so the relative speed is lowering.
+I think that explains why the TTC is increasing even though we get closer.
 
+between frame pair 4 and 5 (3&4) we see a sudden change in values
+It seems to be caused by a single lidar point that deviates from the others
+See the picture 3D Objects4.jpg
 
-by only taking keypoint match pairs that change within a range, this seems to be filtered outer
+The change to frame 5 also has that single lidar point, so the distance seems to be in line with the other measurements again
 
+There is again a large deviation from frame 6 to 7, the delta x is suddently a few cm lower.
+This causes the TTC to shoot up significantly.
+
+The whole TTC calculation is also difficult to do at low relative speeds. 
+That causes the delta x to be very close to the velodyne accuracy of 2cm.
+It might also be caused by tilting of the lidar caused by braking.
+
+Between frame 10&11 we have a huge deviation in delta x
+This is again caused by one outlier in frame 11.
+I think we might need better outlier detection. maybe lower the distance tolerance during eucidean clustering 
+
+If we average over all the frames 0->18 I calculated an average speed of 0.64444 meters per second.
 1.16 meter in 1.8s -> 0.6444mps
-kmph: 2.32kph
+with an average distance of 7.5m, that would give a TTC of 11.6s.
+
+Performance evaluation of TTC Camera
+In general it looks like hte camera gives us a better measurement.
+This is because the closer the camera gets, the better the measurement is.
+the keypoints spans more pixels, with a better accuracy as result.
+
+This process also suffers from these low speeds, the variation in distances are below 1%
+--------------------------------------
+I think I would have to appy a tighter euclidean clustering for the TTC lidar
+We might have to rely more on the camera the closer we get to the object combined with lower relative speed.
+
 
 

@@ -234,7 +234,7 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     TTC = (minXCurr * (frameRate/100)) / (minXPrev - minXCurr);
 
     cout << "frameRate" + std::to_string(count)+":" << frameRate << " minXPrev: " << minXPrev << " minXCurr: " << minXCurr << " TTC: " << TTC;
-    
+    count++;
 }
 
 
